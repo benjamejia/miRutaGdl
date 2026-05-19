@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, YStack, XStack, Text, Button } from 'tamagui';
+import { ScrollView, YStack, XStack, Text, Button, useThemeName } from 'tamagui';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -49,23 +49,7 @@ const routes: AlternativeRouteData[] = [
   },
 ];
 
-export default function ResultsScreen() {
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F6F6F9' }}>
-      <StatusBar barStyle="dark-content" />
-      <HeaderWithBack />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack
-          $gtMd={{ maxWidth: 960, alignSelf: 'center', width: '100%' }}
-        >
-          <ContextRouteHeader onSwap={() => {}} />
-          <MapPlaceholder />
-          <AlternativesSection />
-        </YStack>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+const bg = { light: '#F6F6F9', dark: '#0C0E10' };
 
 function HeaderWithBack() {
   return (
@@ -124,7 +108,7 @@ function AlternativesSection() {
     <YStack
       paddingHorizontal="$6"
       paddingTop="$4"
-      backgroundColor="#F6F6F9"
+      backgroundColor="$background"
       borderTopLeftRadius={32}
       borderTopRightRadius={32}
       marginTop={-16}
@@ -148,5 +132,25 @@ function AlternativesSection() {
         ))}
       </YStack>
     </YStack>
+  );
+}
+
+export default function ResultsScreen() {
+  const themeName = useThemeName();
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: bg[themeName as keyof typeof bg] ?? '#F6F6F9' }}>
+      <StatusBar barStyle={themeName === 'dark' ? 'light-content' : 'dark-content'} />
+      <HeaderWithBack />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <YStack
+          $gtMd={{ maxWidth: 960, alignSelf: 'center', width: '100%' }}
+        >
+          <ContextRouteHeader onSwap={() => {}} />
+          <MapPlaceholder />
+          <AlternativesSection />
+        </YStack>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

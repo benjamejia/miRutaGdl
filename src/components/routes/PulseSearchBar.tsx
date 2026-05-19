@@ -6,18 +6,14 @@ interface PulseSearchBarProps {
   placeholder?: string;
   onSearch?: (query: string) => void;
   onFocus?: () => void;
+  onChangeText?: (text: string) => void;
 }
 
-export function PulseSearchBar({ placeholder = '¿A dónde vas hoy?', onSearch, onFocus }: PulseSearchBarProps) {
+export function PulseSearchBar({ placeholder = '¿A dónde vas hoy?', onSearch, onFocus, onChangeText }: PulseSearchBarProps) {
   const [query, setQuery] = useState('');
 
   return (
-    <YStack
-      marginTop={-24}
-      zIndex={20}
-      paddingHorizontal={0}
-      $gtMd={{ paddingHorizontal: 0 }}
-    >
+    <YStack zIndex={20} paddingHorizontal={0} $gtMd={{ paddingHorizontal: 0 }}>
       <XStack
         backgroundColor="rgba(255,255,255,0.92)"
         borderRadius={20}
@@ -42,13 +38,26 @@ export function PulseSearchBar({ placeholder = '¿A dónde vas hoy?', onSearch, 
           placeholder={placeholder}
           placeholderTextColor="$colorHover"
           value={query}
-          onChangeText={setQuery}
+          onChangeText={(text) => {
+            setQuery(text);
+            onChangeText?.(text);
+          }}
           onFocus={onFocus}
           paddingHorizontal={8}
           paddingVertical={12}
           backgroundColor="transparent"
           focusStyle={{ borderWidth: 0 }}
         />
+        {query.length > 0 && (
+          <XStack
+            width={36} height={36} borderRadius="$5"
+            justifyContent="center" alignItems="center"
+            cursor="pointer" onPress={() => { setQuery(''); onChangeText?.(''); }}
+            pressStyle={{ opacity: 0.6 }}
+          >
+            <MaterialIcons name="close" size={20} color="$colorHover" />
+          </XStack>
+        )}
         <Button
           backgroundColor="#FF6B00"
           paddingHorizontal={20}

@@ -73,7 +73,7 @@ export function BentoMatchCard({
         {/* Badge EN VIVO */}
         {isLive && (
           <XStack
-            backgroundColor="#6200EE"
+            backgroundColor="$secondary"
             paddingHorizontal="$3"
             paddingVertical="$1"
             borderRadius="$10"
@@ -114,14 +114,14 @@ export function BentoMatchCard({
 
         {/* Botón de Acción Estilizado */}
         <Button
-          backgroundColor="#EBE6FF"
+          backgroundColor="$secondaryContainer"
           pressStyle={{ opacity: 0.8, scale: 0.98 }}
           borderRadius="$10"
           width="70%"
           height={40}
           onPress={onAction}
         >
-          <Text color="#6200EE" fontWeight="800" fontSize={11} letterSpacing={0.8}>
+          <Text color="$secondary" fontWeight="800" fontSize={11} letterSpacing={0.8}>
             COMO LLEGAR
           </Text>
         </Button>

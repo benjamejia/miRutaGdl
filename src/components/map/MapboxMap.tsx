@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { YStack, Text } from 'tamagui';
+import { YStack, Text, useThemeName } from 'tamagui';
 import { MaterialIcons } from '@expo/vector-icons';
 import type { FeatureCollection, LineString, Point } from 'geojson';
 
@@ -13,6 +13,11 @@ export interface MapboxMapProps {
   onLoad?: () => void;
 }
 
+const STYLES: Record<string, string> = {
+  light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+};
+
 export function MapboxMap({
   routeGeoJSON,
   originGeoJSON,
@@ -24,6 +29,7 @@ export function MapboxMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
+  const themeName = useThemeName();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -37,7 +43,7 @@ export function MapboxMap({
 
         map = new maplibregl.default.Map({
           container: containerRef.current,
-          style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+          style: STYLES[themeName as keyof typeof STYLES] ?? STYLES.light,
           center: [-103.42, 20.67],
           zoom: 12,
           attributionControl: false,
@@ -169,6 +175,16 @@ export function MapboxMap({
       }
     } catch {}
   }, [routeGeoJSON, routeColor]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !map.isStyleLoaded()) return;
+    const currentStyle = STYLES[themeName as keyof typeof STYLES] ?? STYLES.light;
+    const existing = map.getStyle()?.sprite;
+    if (existing && !currentStyle.includes(existing)) {
+      map.setStyle(currentStyle);
+    }
+  }, [themeName]);
 
   return (
     <View style={{ flex: 1, position: 'relative' }}>

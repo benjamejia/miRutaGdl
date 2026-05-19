@@ -1,8 +1,8 @@
-import React from 'react';
-import { YStack, XStack, Text } from 'tamagui';
-import { MaterialIcons } from '@expo/vector-icons';
-import { MapboxMap } from './MapboxMap';
-import type { FeatureCollection, LineString, Point } from 'geojson';
+import { MaterialIcons } from "@expo/vector-icons";
+import type { FeatureCollection, LineString, Point } from "geojson";
+import React from "react";
+import { Text, XStack, YStack } from "tamagui";
+import { MapboxMap } from "./MapboxMap";
 
 interface RouteSummary {
   line: string;
@@ -22,7 +22,13 @@ interface InteractiveMapContainerProps {
   routeColor?: string;
 }
 
-function FloatingButton({ icon, onPress }: { icon: string; onPress?: () => void }) {
+function FloatingButton({
+  icon,
+  onPress,
+}: {
+  icon: string;
+  onPress?: () => void;
+}) {
   return (
     <XStack
       width={44}
@@ -35,7 +41,7 @@ function FloatingButton({ icon, onPress }: { icon: string; onPress?: () => void 
       pressStyle={{ opacity: 0.75, scale: 0.92 }}
       onPress={onPress}
       style={{
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.12,
         shadowRadius: 8,
@@ -49,11 +55,11 @@ function FloatingButton({ icon, onPress }: { icon: string; onPress?: () => void 
 
 export function InteractiveMapContainer({
   routeSummary = {
-    line: 'C121',
-    duration: '32',
-    status: 'A tiempo',
-    statusColor: '#026948',
-    arrival: 'Llegada 18:45',
+    line: "C121",
+    duration: "32",
+    status: "A tiempo",
+    statusColor: "#026948",
+    arrival: "Llegada 18:45",
   },
   height,
   routeGeoJSON,
@@ -91,7 +97,7 @@ export function InteractiveMapContainer({
           padding="$4"
           gap="$2"
           style={{
-            shadowColor: '#000',
+            shadowColor: "#000",
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.12,
             shadowRadius: 16,
@@ -99,19 +105,40 @@ export function InteractiveMapContainer({
           }}
         >
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize={11} fontWeight="700" color="$colorHover" textTransform="uppercase" letterSpacing={1}>
+            <Text
+              fontSize={11}
+              fontWeight="700"
+              color="$colorHover"
+              textTransform="uppercase"
+              letterSpacing={1}
+            >
               Ruta Sugerida
             </Text>
             <XStack gap={4} alignItems="center">
-              <MaterialIcons name="check-circle" size={14} color={routeSummary.statusColor} />
-              <Text fontSize={11} fontWeight="700" color={routeSummary.statusColor}>
+              <MaterialIcons
+                name="check-circle"
+                size={14}
+                color={routeSummary.statusColor}
+              />
+              <Text
+                fontSize={11}
+                fontWeight="700"
+                color={routeSummary.statusColor}
+              >
                 {routeSummary.status}
               </Text>
             </XStack>
           </XStack>
           <XStack justifyContent="space-between" alignItems="baseline">
             <XStack alignItems="baseline" gap={2}>
-              <Text fontFamily="$heading" fontSize={22} fontWeight="800" color="$color" lineHeight={26}>
+              <Text
+                fontFamily="$heading"
+                fontSize={22}
+                fontWeight="800"
+                color="$color"
+                lineHeight={26}
+                letterSpacing={1}
+              >
                 {routeSummary.line}
               </Text>
               <Text fontSize={15} fontWeight="700" color="$colorHover">

@@ -2,11 +2,11 @@ import React from 'react';
 import { YStack, XStack, Text } from 'tamagui';
 import { MaterialIcons } from '@expo/vector-icons';
 
-interface FanFestBannerProps {
+interface MatchesBannerProps {
   onPress?: () => void;
 }
 
-export function FanFestBanner({ onPress }: FanFestBannerProps) {
+export function MatchesBanner({ onPress }: MatchesBannerProps) {
   return (
     <YStack
       borderRadius={24}
@@ -15,7 +15,7 @@ export function FanFestBanner({ onPress }: FanFestBannerProps) {
       pressStyle={{ opacity: 0.92, scale: 0.98 }}
       minHeight={160}
       position="relative"
-      backgroundColor="#E84393"
+      backgroundColor="#8B5CF6"
     >
       <XStack
         padding="$5"
@@ -33,29 +33,29 @@ export function FanFestBanner({ onPress }: FanFestBannerProps) {
           alignItems="center"
           flexShrink={0}
         >
-          <MaterialIcons name="music-note" size={30} color="#ffffff" />
+          <MaterialIcons name="sports-soccer" size={30} color="#ffffff" />
         </YStack>
 
         <YStack flex={1} gap={6}>
           <XStack gap={8} alignItems="center">
-            <YStack paddingHorizontal={10} paddingVertical={3} backgroundColor="rgba(0,255,180,0.25)" borderRadius="$10">
-              <Text fontSize={10} fontWeight="800" color="#00FFB4" textTransform="uppercase" letterSpacing={1.2}>
-                Fan Fest
+            <YStack paddingHorizontal={10} paddingVertical={3} backgroundColor="rgba(255,255,255,0.2)" borderRadius="$10">
+              <Text fontSize={10} fontWeight="800" color="#ffffff" textTransform="uppercase" letterSpacing={1.2}>
+                Partidos
               </Text>
             </YStack>
           </XStack>
 
           <Text fontFamily="$heading" fontSize={20} fontWeight="800" color="#ffffff" lineHeight={24} letterSpacing={-0.3}>
-            FIFA Fan Festival
+            Vive la emoción del Mundial
           </Text>
 
           <Text fontSize={13} color="rgba(255, 255, 255, 0.8)" lineHeight={18}>
-            Música, pantallas gigantes y la mejor atmósfera mundialista en el Parque de las Niñas y Niños.
+            Consulta los horarios y las sedes de todos los partidos en Guadalajara.
           </Text>
 
           <XStack gap={8} alignItems="center" marginTop={4}>
             <XStack
-              backgroundColor="#00FFB4"
+              backgroundColor="rgba(255,255,255,0.25)"
               paddingHorizontal={16}
               paddingVertical={8}
               borderRadius={12}
@@ -63,10 +63,10 @@ export function FanFestBanner({ onPress }: FanFestBannerProps) {
               gap={6}
               alignItems="center"
             >
-              <Text fontSize={12} fontWeight="800" color="#1A1A2E" textTransform="uppercase" letterSpacing={0.8}>
-                Ver cartelera
+              <Text fontSize={12} fontWeight="800" color="#FFFFFF" textTransform="uppercase" letterSpacing={0.8}>
+                Ver partidos
               </Text>
-              <MaterialIcons name="arrow-forward" size={16} color="#1A1A2E" />
+              <MaterialIcons name="arrow-forward" size={16} color="#FFFFFF" />
             </XStack>
           </XStack>
         </YStack>

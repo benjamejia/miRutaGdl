@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, YStack, XStack, Text, Button, Switch, Image } from 'tamagui';
+import { ScrollView, YStack, XStack, Text, Button, Switch, Image, useThemeName } from 'tamagui';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useThemeMode } from '../../src/hooks/useThemeMode';
+
+const bg = { light: '#F6F6F9', dark: '#0C0E10' };
 
 function ProfileHeader() {
   return (
@@ -291,19 +294,17 @@ function AccessibilityToggleRow({
   );
 }
 
-interface SettingNavigationButtonProps {
-  icon: string;
-  title: string;
-  value?: string;
-  onPress?: () => void;
-}
-
 function SettingNavigationButton({
   icon,
   title,
   value,
   onPress,
-}: SettingNavigationButtonProps) {
+}: {
+  icon: string;
+  title: string;
+  value?: string;
+  onPress?: () => void;
+}) {
   return (
     <Button
       unstyled
@@ -341,10 +342,12 @@ export default function ProfileScreen() {
   const [rutasAccesibles, setRutasAccesibles] = useState(true);
   const [asistenciaVisual, setAsistenciaVisual] = useState(false);
   const [guiaPorVoz, setGuiaPorVoz] = useState(false);
+  const themeName = useThemeName();
+  const { theme: themeMode, toggleTheme } = useThemeMode();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F6F6F9' }}>
-      <StatusBar barStyle="dark-content" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: bg[themeName as keyof typeof bg] ?? '#F6F6F9' }}>
+      <StatusBar barStyle={themeName === 'dark' ? 'light-content' : 'dark-content'} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <YStack
           paddingHorizontal="$5"
@@ -416,7 +419,7 @@ export default function ProfileScreen() {
                 lineHeight={24}
                 $gtMd={{ fontSize: 21, lineHeight: 28 }}
               >
-                Ajustes de Cuenta
+                Ajustes
               </Text>
             </XStack>
             <YStack
@@ -431,6 +434,23 @@ export default function ProfileScreen() {
                 elevation: 2,
               }}
             >
+              <XStack padding="$5" alignItems="center" justifyContent="space-between" minHeight={52} $gtMd={{ padding: "$6", minHeight: 56 }}>
+                <XStack gap="$4" alignItems="center" flex={1}>
+                  <MaterialIcons name={themeMode === 'dark' ? 'dark-mode' : 'light-mode'} size={22} color="$colorHover" $gtMd={{ size: 24 }} />
+                  <YStack flex={1}>
+                    <Text fontWeight="500" color="$color" fontSize={15} $gtMd={{ fontSize: 16 }}>
+                      Modo Oscuro
+                    </Text>
+                    <Text fontSize={12} color="$colorHover">
+                      {themeMode === 'dark' ? 'Activado' : 'Desactivado'}
+                    </Text>
+                  </YStack>
+                </XStack>
+                <Switch checked={themeMode === 'dark'} onCheckedChange={toggleTheme} backgroundColor="$surfaceHigh">
+                  <Switch.Thumb />
+                </Switch>
+              </XStack>
+              <YStack height={1} backgroundColor="rgba(172,173,175,0.1)" />
               <SettingNavigationButton icon="notifications" title="Notificaciones" />
               <YStack height={1} backgroundColor="rgba(172,173,175,0.1)" />
               <SettingNavigationButton icon="language" title="Idioma" value="Español" />

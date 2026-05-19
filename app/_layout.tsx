@@ -3,12 +3,19 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { TamaguiProvider } from 'tamagui';
 import tamaguiConfig from '../src/tamagui.config';
+import { ThemeModeProvider, useThemeMode } from '../src/hooks/useThemeMode';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayoutInner() {
+  const { theme } = useThemeMode();
+
+  useEffect(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={theme}>
       <Stack>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -18,5 +25,13 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
     </TamaguiProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeModeProvider>
+      <RootLayoutInner />
+    </ThemeModeProvider>
   );
 }

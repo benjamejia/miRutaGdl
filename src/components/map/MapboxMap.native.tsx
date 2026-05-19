@@ -1,5 +1,5 @@
 import React from 'react';
-import { YStack, Text } from 'tamagui';
+import { YStack, Text, useThemeName } from 'tamagui';
 import { MaterialIcons } from '@expo/vector-icons';
 import Mapbox from '@rnmapbox/maps';
 import type { FeatureCollection, LineString, Point } from 'geojson';
@@ -15,6 +15,11 @@ export interface MapboxMapProps {
   routeColor?: string;
   onLoad?: () => void;
 }
+
+const STYLES: Record<string, string> = {
+  light: 'mapbox://styles/mapbox/light-v11',
+  dark: 'mapbox://styles/mapbox/dark-v11',
+};
 
 function MapError({ message }: { message: string }) {
   return (
@@ -33,12 +38,18 @@ export function MapboxMap({
   routeColor = '#FF6B00',
   onLoad,
 }: MapboxMapProps) {
+  const themeName = useThemeName();
+
   if (!MAPBOX_TOKEN) {
     return <MapError message="Mapbox token no configurado. Agrega EXPO_PUBLIC_MAPBOX_ACCESS_TOKEN en .env" />;
   }
 
   return (
-    <Mapbox.MapView style={{ flex: 1 }} onDidFinishLoadingMap={onLoad}>
+    <Mapbox.MapView
+      style={{ flex: 1 }}
+      styleURL={STYLES[themeName as keyof typeof STYLES] ?? STYLES.light}
+      onDidFinishLoadingMap={onLoad}
+    >
       <Mapbox.Camera
         defaultSettings={{ centerCoordinate: [-103.42, 20.67], zoomLevel: 12 }}
         centerCoordinate={[-103.42, 20.67]}
