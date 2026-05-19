@@ -39,3 +39,7 @@ Sigue detenidamente estos pasos en tu terminal para clonar, instalar las depende
 ```bash
 git clone [https://github.com/benjamejia/miRutaGdl.git](https://github.com/benjamejia/miRutaGdl.git)
 cd miRutaGdl
+
+pnpm install
+
+npm run web
