@@ -7,7 +7,6 @@ import {
   ContextRouteHeader,
   MapPlaceholder,
   AlternativeRouteCard,
-  WorldCupPromoCard,
 } from '../src/components';
 
 import type { AlternativeRouteData } from '../src/components';
@@ -62,7 +61,6 @@ export default function ResultsScreen() {
           <ContextRouteHeader onSwap={() => {}} />
           <MapPlaceholder />
           <AlternativesSection />
-          <WorldCupPromoCard />
         </YStack>
       </ScrollView>
     </SafeAreaView>

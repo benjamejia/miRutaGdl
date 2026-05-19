@@ -5,7 +5,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ContextRouteHeader } from './ContextRouteHeader';
 import { AlternativeRouteCard } from './AlternativeRouteCard';
 import { PulseSearchBar } from './PulseSearchBar';
-import { WorldCupPromoCard } from '../events/WorldCupPromoCard';
 import { InteractiveMapContainer } from '../map/InteractiveMapContainer';
 import { markers, zoneMarkers, getActiveRoute, routeLineColors } from '../../lib/routes-data';
 import { useRouteAlternatives } from '../../hooks/useRouteAlternatives';
@@ -95,7 +94,6 @@ export function RouteMapView() {
                 />
               );
             })}
-            <WorldCupPromoCard />
           </YStack>
         )}
       </YStack>
