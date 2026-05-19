@@ -38,7 +38,7 @@ export function PulseSearchBar({ placeholder = '¿A dónde vas hoy?', onSearch, 
           placeholder={placeholder}
           placeholderTextColor="$colorHover"
           value={query}
-          onChangeText={(text) => {
+          onChangeText={(text: string) => {
             setQuery(text);
             onChangeText?.(text);
           }}

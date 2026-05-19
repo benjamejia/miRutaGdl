@@ -16,7 +16,7 @@ const ThemeModeContext = createContext<ThemeModeContextType>({
 });
 
 export function ThemeModeProvider({ children }: { children: React.ReactNode }) {
-  const systemTheme = useColorScheme() ?? 'light';
+  const systemTheme = (useColorScheme() ?? 'light') as Theme;
   const [theme, setThemeState] = useState<Theme>(systemTheme);
 
   const toggleTheme = useCallback(() => {

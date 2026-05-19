@@ -1,28 +1,12 @@
-import { config as defaultConfig } from '@tamagui/config';
+import { defaultConfig } from '@tamagui/config/v4';
 import { createTamagui } from 'tamagui';
 
 export const tamaguiConfig = createTamagui({
   ...defaultConfig,
   themeClassNameOnRoot: true,
-  tokens: {
-    ...defaultConfig.tokens,
-    color: {
-      ...defaultConfig.tokens?.color,
-      momentumOrange: '#FF6B00',
-      momentumOrangeDim: '#893600',
-      momentumOrangeLight: '#FFF0EA',
-      momentumOrangeContainer: '#FF7A2F',
-      worldCupPurple: '#6200EE',
-      worldCupPurpleDim: '#5D00E3',
-      worldCupPurpleLight: '#F7F0FF',
-      worldCupPurpleContainer: '#D9CAFF',
-      tertiaryGreen: '#026948',
-      tertiaryGreenContainer: '#A5FACF',
-    },
-  },
   themes: {
     light: {
-      ...defaultConfig.themes?.light,
+      ...defaultConfig.themes.light,
       background: '#F6F6F9',
       backgroundStrong: '#FFFFFF',
       backgroundSoft: '#F0F0F3',
@@ -46,7 +30,7 @@ export const tamaguiConfig = createTamagui({
       outlineVariant: '#C4C6C8',
     },
     dark: {
-      ...defaultConfig.themes?.dark,
+      ...defaultConfig.themes.dark,
       background: '#0C0E10',
       backgroundStrong: '#07090B',
       backgroundSoft: '#141618',

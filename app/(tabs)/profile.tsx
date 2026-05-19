@@ -104,11 +104,10 @@ function FanIdBentoCard() {
     <YStack
       position="relative"
       overflow="hidden"
-      borderRadius="$6"
-      padding="$6"
-      $gtSm={{ borderRadius: "$8", padding: "$8" }}
-      minHeight={200}
-      $gtMd={{ minHeight: 220 }}
+      borderRadius="$5"
+      padding="$5"
+      $gtSm={{ borderRadius: "$7", padding: "$7" }}
+      $gtMd={{ borderRadius: "$8", padding: "$8" }}
       style={{
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 8 },
@@ -143,10 +142,10 @@ function FanIdBentoCard() {
         position="relative"
         zIndex={10}
         flexDirection="column"
-        $gtMd={{ flexDirection: 'row' }}
-        justifyContent="space-between"
+        $gtSm={{ flexDirection: 'row' }}
         alignItems="center"
-        gap="$6"
+        gap="$5"
+        $gtSm={{ gap: "$6" }}
       >
         <YStack flex={1} width="100%" gap="$2">
           <Text
@@ -173,42 +172,55 @@ function FanIdBentoCard() {
           >
             Guadalajara Host City
           </Text>
-          <XStack gap="$4" paddingTop="$4" flexWrap="wrap">
+          <XStack gap="$3" paddingTop="$3" flexWrap="wrap" $gtSm={{ gap: "$4", paddingTop: "$4" }}>
             <XStack
               backgroundColor="rgba(255,255,255,0.2)"
-              paddingHorizontal="$4"
-              paddingVertical="$2"
-              borderRadius="$4"
+              paddingHorizontal="$3"
+              paddingVertical="$1"
+              borderRadius="$3"
+              $gtSm={{ paddingHorizontal: "$4", paddingVertical: "$2", borderRadius: "$4" }}
             >
-              <Text fontWeight="700" fontSize={12} color="#FFFFFF" $gtMd={{ fontSize: 14 }}>
+              <Text fontWeight="700" fontSize={11} color="#FFFFFF" $gtMd={{ fontSize: 14 }}>
                 Estadio Akron
               </Text>
             </XStack>
             <XStack
               backgroundColor="rgba(255,255,255,0.2)"
-              paddingHorizontal="$4"
-              paddingVertical="$2"
-              borderRadius="$4"
+              paddingHorizontal="$3"
+              paddingVertical="$1"
+              borderRadius="$3"
+              $gtSm={{ paddingHorizontal: "$4", paddingVertical: "$2", borderRadius: "$4" }}
             >
-              <Text fontWeight="700" fontSize={12} color="#FFFFFF" $gtMd={{ fontSize: 14 }}>
+              <Text fontWeight="700" fontSize={11} color="#FFFFFF" $gtMd={{ fontSize: 14 }}>
                 VIP Access
               </Text>
             </XStack>
           </XStack>
         </YStack>
 
-        <YStack backgroundColor="#FFFFFF" padding="$3" borderRadius="$5" alignSelf="center" $gtMd={{ padding: "$4" }}>
+        <YStack
+          backgroundColor="#FFFFFF"
+          padding="$2"
+          borderRadius="$4"
+          alignSelf="center"
+          width={90}
+          height={90}
+          $gtSm={{ width: 110, height: 110, padding: "$3", borderRadius: "$5" }}
+          $gtMd={{ width: 150, height: 150, padding: "$4" }}
+          alignItems="center"
+          justifyContent="center"
+        >
           <YStack
-            width={80}
-            height={80}
-            $gtSm={{ width: 100, height: 100 }}
-            $gtMd={{ width: 140, height: 140 }}
+            width="100%"
+            height="100%"
             backgroundColor="#F1F5F9"
             alignItems="center"
             justifyContent="center"
             position="relative"
+            borderRadius="$2"
+            $gtMd={{ borderRadius: "$3" }}
           >
-            <YStack gap={1.5} width="100%" height="100%" padding={6} $gtMd={{ gap: 2, padding: "$2" }}>
+            <YStack gap={1.5} width="100%" height="100%" padding={5} $gtMd={{ gap: 2, padding: "$2" }}>
               {qrPattern.map((row, i) => (
                 <XStack key={i} gap={1.5} flex={1} $gtMd={{ gap: 2 }}>
                   {row.map((cell, j) => (
@@ -224,7 +236,7 @@ function FanIdBentoCard() {
               ))}
             </YStack>
             <YStack position="absolute" alignItems="center" justifyContent="center">
-              <MaterialIcons name="qr-code" size={24} color="#6200EE" $gtSm={{ size: 32 }} $gtMd={{ size: 40 }} />
+              <MaterialIcons name="qr-code" size={22} color="#6200EE" $gtSm={{ size: 28 }} $gtMd={{ size: 38 }} />
             </YStack>
           </YStack>
         </YStack>
