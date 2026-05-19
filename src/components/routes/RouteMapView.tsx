@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { ScrollView, YStack, XStack, Text, useTheme } from 'tamagui';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, NativeScrollEvent, NativeSyntheticEvent, useWindowDimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ContextRouteHeader } from './ContextRouteHeader';
 import { AlternativeRouteCard } from './AlternativeRouteCard';
@@ -14,6 +14,8 @@ export function RouteMapView() {
   const [searchQuery, setSearchQuery] = useState('');
   const [routesExpanded, setRoutesExpanded] = useState(true);
   const theme = useTheme();
+  const { height: winH } = useWindowDimensions();
+  const hasScrolledRef = useRef(false);
 
   const activeRouteGeo = getActiveRoute(selectedLineName);
 
@@ -32,18 +34,34 @@ export function RouteMapView() {
     });
   }, [alternatives, searchQuery]);
 
+  const altSectionMaxHeight = Math.min(380, winH * 0.4);
+
+  const handleAltScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (e.nativeEvent.contentOffset.y > 20) {
+      hasScrolledRef.current = true;
+    }
+  };
+
+  const handleAltScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (e.nativeEvent.contentOffset.y <= 0 && hasScrolledRef.current && routesExpanded) {
+      setRoutesExpanded(false);
+      hasScrolledRef.current = false;
+    }
+  };
+
   return (
     <YStack flex={1} backgroundColor="$background">
-      <ScrollView flex={1} showsVerticalScrollIndicator={false} bounces={false}>
-        <YStack paddingHorizontal="$5" paddingTop="$4" gap="$3">
-          <PulseSearchBar
-            onSearch={(q) => setSearchQuery(q)}
-            onChangeText={(t) => setSearchQuery(t)}
-          />
-          <ContextRouteHeader />
-        </YStack>
+      <YStack paddingHorizontal="$5" paddingTop="$4" gap="$3">
+        <PulseSearchBar
+          onSearch={(q) => setSearchQuery(q)}
+          onChangeText={(t) => setSearchQuery(t)}
+        />
+        <ContextRouteHeader />
+      </YStack>
+
+      <YStack flex={1} minHeight={180}>
         <InteractiveMapContainer
-          height={routesExpanded ? 300 : 420}
+          flex
           routeGeoJSON={activeRouteGeo.geojson}
           originGeoJSON={markers.origin}
           destinationGeoJSON={markers.destination}
@@ -57,16 +75,20 @@ export function RouteMapView() {
           }}
           routeColor={routeLineColors[activeRouteGeo.line]}
         />
+      </YStack>
+
+      {routesExpanded ? (
         <YStack
           backgroundColor="$surfaceLowest"
           borderTopLeftRadius={24}
           borderTopRightRadius={24}
           marginTop={-20}
           zIndex={10}
+          maxHeight={altSectionMaxHeight}
           paddingTop="$5"
           paddingHorizontal="$5"
           paddingBottom="$8"
-          $gtMd={{ paddingHorizontal: "$6" }}
+          $gtMd={{ paddingHorizontal: '$6' }}
         >
           <XStack justifyContent="space-between" alignItems="center" marginBottom="$4">
             <XStack gap={8} alignItems="center" flex={1}>
@@ -85,15 +107,11 @@ export function RouteMapView() {
                 gap={4}
                 cursor="pointer"
                 pressStyle={{ opacity: 0.75 }}
-                onPress={() => setRoutesExpanded(!routesExpanded)}
+                onPress={() => setRoutesExpanded(false)}
               >
-                <MaterialIcons
-                  name={routesExpanded ? 'visibility' : 'visibility-off'}
-                  size={16}
-                  color="$colorHover"
-                />
+                <MaterialIcons name="visibility-off" size={16} color="$colorHover" />
                 <Text fontSize={11} fontWeight="700" color="$colorHover" textTransform="uppercase" letterSpacing={0.5}>
-                  {routesExpanded ? 'Ocultar' : 'Mostrar'}
+                  Ocultar
                 </Text>
               </XStack>
               <XStack
@@ -115,24 +133,15 @@ export function RouteMapView() {
             </XStack>
           </XStack>
 
-          {!routesExpanded && filteredAlternatives.length > 0 && (
-            <XStack
-              paddingVertical="$3" paddingHorizontal="$4"
-              backgroundColor="$surface" borderRadius={12}
-              alignItems="center" gap={8}
-              onPress={() => setRoutesExpanded(true)}
-              cursor="pointer" pressStyle={{ opacity: 0.8 }}
-            >
-              <MaterialIcons name="keyboard-arrow-up" size={20} color="$colorHover" />
-              <Text fontSize={13} fontWeight="600" color="$colorHover" flex={1}>
-                {filteredAlternatives.length} ruta{filteredAlternatives.length !== 1 ? 's' : ''} disponible{filteredAlternatives.length !== 1 ? 's' : ''}
-              </Text>
-              <MaterialIcons name="keyboard-arrow-up" size={20} color="$colorHover" />
-            </XStack>
-          )}
-
-          {routesExpanded && (
-            loading ? (
+          <ScrollView
+            style={{ flex: 1 }}
+            showsVerticalScrollIndicator
+            nestedScrollEnabled
+            onScroll={handleAltScroll}
+            onScrollEndDrag={handleAltScrollEndDrag}
+            scrollEventThrottle={16}
+          >
+            {loading ? (
               <YStack justifyContent="center" alignItems="center" padding="$8">
                 <ActivityIndicator size="large" color={theme.secondary?.val ?? '#6200EE'} />
               </YStack>
@@ -149,7 +158,7 @@ export function RouteMapView() {
                 </Text>
               </YStack>
             ) : (
-              <YStack gap={16}>
+              <YStack gap={16} paddingBottom="$4">
                 {filteredAlternatives.map((route) => {
                   const detail = routeDetails[route.id];
                   const isSelected = detail && detail.lineName === selectedLineName;
@@ -163,10 +172,39 @@ export function RouteMapView() {
                   );
                 })}
               </YStack>
-            )
-          )}
+            )}
+          </ScrollView>
         </YStack>
-      </ScrollView>
+      ) : (
+        <YStack
+          backgroundColor="$surfaceLowest"
+          borderTopLeftRadius={24}
+          borderTopRightRadius={24}
+          marginTop={-20}
+          zIndex={10}
+          paddingHorizontal="$5"
+          paddingTop="$3"
+          paddingBottom="$6"
+        >
+          <XStack
+            height={40}
+            backgroundColor="$surface"
+            borderRadius={12}
+            alignItems="center"
+            justifyContent="center"
+            gap={6}
+            cursor="pointer"
+            pressStyle={{ opacity: 0.8 }}
+            onPress={() => setRoutesExpanded(true)}
+          >
+            <MaterialIcons name="keyboard-arrow-up" size={18} color="$colorHover" />
+            <Text fontSize={13} fontWeight="600" color="$colorHover">
+              {filteredAlternatives.length} ruta{filteredAlternatives.length !== 1 ? 's' : ''} disponible{filteredAlternatives.length !== 1 ? 's' : ''}
+            </Text>
+            <MaterialIcons name="keyboard-arrow-up" size={18} color="$colorHover" />
+          </XStack>
+        </YStack>
+      )}
     </YStack>
   );
 }

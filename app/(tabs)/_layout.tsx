@@ -73,7 +73,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
             <TabIcon name={focused ? 'home' : 'home'} color={color} focused={focused} bgColor={c.focusBg} />
           ),
         }}
@@ -82,7 +82,7 @@ export default function TabLayout() {
         name="lines"
         options={{
           title: 'Routes',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
             <TabIcon name="directions-bus" color={color} focused={focused} bgColor={c.focusBg} />
           ),
         }}
@@ -91,7 +91,7 @@ export default function TabLayout() {
         name="events"
         options={{
           title: 'Eventos',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
             <TabIcon name="event" color={color} focused={focused} bgColor={c.focusBg} />
           ),
         }}
@@ -100,7 +100,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
             <TabIcon name="person" color={color} focused={focused} bgColor={c.focusBg} />
           ),
         }}

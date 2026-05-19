@@ -15,6 +15,7 @@ interface RouteSummary {
 interface InteractiveMapContainerProps {
   routeSummary?: RouteSummary;
   height?: number;
+  flex?: boolean;
   routeGeoJSON?: FeatureCollection<LineString>;
   originGeoJSON?: FeatureCollection<Point>;
   destinationGeoJSON?: FeatureCollection<Point>;
@@ -62,6 +63,7 @@ export function InteractiveMapContainer({
     arrival: "Llegada 18:45",
   },
   height,
+  flex,
   routeGeoJSON,
   originGeoJSON,
   destinationGeoJSON,
@@ -72,8 +74,9 @@ export function InteractiveMapContainer({
     <YStack
       position="relative"
       width="100%"
-      height={height ?? 260}
-      $gtMd={{ height: 340 }}
+      height={flex ? '100%' : (height ?? 260)}
+      flex={flex ? 1 : undefined}
+      $gtMd={flex ? undefined : { height: 340 }}
       overflow="hidden"
       borderRadius="$6"
     >
