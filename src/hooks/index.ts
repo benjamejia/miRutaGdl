@@ -1,0 +1,1 @@
+export { useRouteAlternatives } from './useRouteAlternatives';
